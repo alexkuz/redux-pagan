@@ -58,8 +58,8 @@ function concatPath(locale, data, path, subpath) {
   return memoizedI18nPartial;
 }
 
-export default memoize(function i18nResolver(locale, data, ...path) {
+export default memoize(function i18nResolver(locale, data, version, ...path) {
   return concatPath(locale, data, [], path);
-}, function(locale, data, ...path) {
-  return [locale, ...path].join(',');
+}, function(locale, data, version, ...path) {
+  return [locale, version, ...path].join(',');
 });
