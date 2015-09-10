@@ -38,5 +38,8 @@
   },
   "dependencies": {
     "lodash.memoize": "^3.0.4"
+  },
+  "peerDependencies": {
+    "intl-messageformat": "^1.1.0"
   }
 }

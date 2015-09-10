@@ -1,4 +1,5 @@
 import memoize from 'lodash.memoize';
+import IntlMessageFormat from 'intl-messageformat';
 
 function getLangString(data, fullpath) {
   if (fullpath.filter(key => typeof key !== 'string').length > 0) {
@@ -35,6 +36,12 @@ function concatPath(locale, data, path, subpath) {
 
   memoizedI18nPartial.toString = function() {
     return getLangString(data, _path);
+  }
+
+  memoizedI18nPartial.format = function(values) {
+    const str = getLangString(data, _path);
+    const formatter = new IntlMessageFormat(str, locale);
+    return formatter.format(values);
   }
 
   Object.defineProperty(memoizedI18nPartial, 's', {
