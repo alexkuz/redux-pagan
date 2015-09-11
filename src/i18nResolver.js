@@ -1,28 +1,55 @@
 import memoize from 'lodash.memoize';
 import IntlMessageFormat from 'intl-messageformat';
 
-function getLangString(data, fullpath) {
+/* eslint-disable no-console */
+
+function isEmpty(data) {
+  return !data || Object.keys(data).length === 0;
+}
+
+const emptyLocaleDataWarned = {};
+const notFoundKeyWarned = {};
+
+function getLangString(locale, data, fullpath) {
   if (fullpath.filter(key => typeof key !== 'string').length > 0) {
-    console.error('Invalid langpack path: ', fullpath); // eslint-disable-line no-console
+    console.error('Invalid langpack path: ', fullpath);
   }
 
   const str = fullpath.reduce(
-    (obj, key, idx) => (idx === fullpath.length - 1) ?
-      ((obj && (obj[key] !== undefined)) ? obj[key].toString() : key) :
-      ((obj && obj[key]) ? obj[key] : null),
+    (obj, key, idx) => {
+      if (idx === fullpath.length - 1) {
+        if (obj && (obj[key] !== undefined)) {
+          return obj[key].toString();
+        } else {
+          const keyPath = `${locale}:${fullpath.join('/')}`;
+          if (!isEmpty(data) && !notFoundKeyWarned[keyPath]) {
+            console.warn(`Redux-Pagan: key was not found at path: ${keyPath}`);
+            notFoundKeyWarned[keyPath] = true;
+          }
+          return key;
+        }
+      } else {
+        return (obj && obj[key]) ? obj[key] : null
+      }
+    },
     data
   );
 
   if (str && !(typeof str === 'string')) {
-    console.warn('String expected, got: ', str); // eslint-disable-line no-console
+    console.warn('String expected, got: ', str);
   }
 
   return str;
 }
 
 function concatPath(locale, data, path, subpath) {
+  if (isEmpty(data) && !emptyLocaleDataWarned[locale]) {
+    console.warn(`Redux-Pagan: got empty data for locale '${locale}'`);
+    emptyLocaleDataWarned[locale] = true;
+  }
+
   if (subpath.length === 0) {
-    return getLangString(data, path);
+    return getLangString(locale, data, path);
   }
   const _path = [...path, ...subpath];
 
@@ -35,11 +62,11 @@ function concatPath(locale, data, path, subpath) {
   });
 
   memoizedI18nPartial.toString = function() {
-    return getLangString(data, _path);
+    return getLangString(locale, data, _path);
   }
 
   memoizedI18nPartial.format = function(values) {
-    const str = getLangString(data, _path);
+    const str = getLangString(locale, data, _path);
     const formatter = new IntlMessageFormat(str, locale);
     return formatter.format(values);
   }
@@ -64,6 +91,8 @@ function concatPath(locale, data, path, subpath) {
 
   return memoizedI18nPartial;
 }
+
+/* eslint-enable no-console */
 
 export default memoize(function i18nResolver(locale, data, version, ...path) {
   return concatPath(locale, data, [], path);
