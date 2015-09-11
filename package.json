@@ -1,6 +1,6 @@
 {
   "name": "redux-pagan",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "redux binding for react-pagan internationalization module",
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-dir lib",
