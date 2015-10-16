@@ -12,7 +12,9 @@ const notFoundKeyWarned = {};
 
 function getLangString(locale, data, fullpath) {
   if (fullpath.filter(key => typeof key !== 'string').length > 0) {
-    console.error('Invalid langpack path: ', fullpath);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Invalid langpack path: ', fullpath);
+    }
   }
 
   const str = fullpath.reduce(
@@ -23,7 +25,9 @@ function getLangString(locale, data, fullpath) {
         } else {
           const keyPath = `${locale}:${fullpath.join('/')}`;
           if (!isEmpty(data) && !notFoundKeyWarned[keyPath]) {
-            console.warn(`Redux-Pagan: key was not found at path: ${keyPath}`);
+            if (process.env.NODE_ENV !== 'production') {
+              console.warn(`Redux-Pagan: key was not found at path: ${keyPath}`);
+            }
             notFoundKeyWarned[keyPath] = true;
           }
           return key;
@@ -36,7 +40,9 @@ function getLangString(locale, data, fullpath) {
   );
 
   if (str && !(typeof str === 'string')) {
-    console.warn('String expected, got: ', str);
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('String expected, got: ', str);
+    }
   }
 
   return str;
@@ -44,7 +50,9 @@ function getLangString(locale, data, fullpath) {
 
 function concatPath(locale, data, path, subpath) {
   if (isEmpty(data) && !emptyLocaleDataWarned[locale]) {
-    console.warn(`Redux-Pagan: got empty data for locale '${locale}'`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(`Redux-Pagan: got empty data for locale '${locale}'`);
+    }
     emptyLocaleDataWarned[locale] = true;
   }
 
