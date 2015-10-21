@@ -61,7 +61,7 @@ class App extends Component {
 ```js
 i18n.get('some', 'path', 'to')('lang', 'string')
 ```
-Every call is memoized. To receive string value from last call, use `.toString()` or `.s` property (it's also smart enough to be used as React element without calling `.toString()` or `.s`)
+Every call is memoized. To receive string value from last call, use `.toString()` or `.s` property (it's also smart enough to be used as React element without calling `.toString()` or `.s` - **NB**: for this to work, you'll need a `Symbol` polyfill)
 
 ```js
 // in this case lang data looks like:

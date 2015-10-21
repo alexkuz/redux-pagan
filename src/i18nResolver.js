@@ -93,8 +93,12 @@ function concatPath(locale, data, path, subpath) {
     }
   });
 
-  memoizedI18nPartial[Symbol.iterator] = function *() {
-    yield memoizedI18nPartial.toString();
+  const desc = Object.getOwnPropertyDescriptor(memoizedI18nPartial, Symbol.iterator);
+
+  if (!desc || desc.configurable) {
+    memoizedI18nPartial[Symbol.iterator] = function *() {
+      yield memoizedI18nPartial.toString();
+    }
   }
 
   return memoizedI18nPartial;
