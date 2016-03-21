@@ -30,7 +30,7 @@ function getLangString(locale, data, fullpath) {
             }
             notFoundKeyWarned[keyPath] = true;
           }
-          return key;
+          return fullpath.join('.');
         }
       } else {
         return (obj && obj[key]) ? obj[key] : null
