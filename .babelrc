@@ -1,4 +1,4 @@
 {
-  "stage": 0,
-  "optional": "runtime"
+  presets: ['stage-0', 'es2015'],
+  plugins: ['babel-plugin-transform-runtime']
 }
