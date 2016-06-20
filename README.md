@@ -24,7 +24,7 @@ const store = createStoreWithMiddleware(rootReducer);
 
 #### Loading lang data
 
-```js
+```jsx
 import { loadLang } from 'redux-pagan';
 
 function getLangData(locale) {
@@ -63,7 +63,7 @@ i18n.get('some', 'path', 'to')('lang', 'string')
 ```
 Every call is memoized. To receive string value from last call, use `.toString()` or `.s` property (it's also smart enough to be used as React element without calling `.toString()` or `.s` - **NB**: for this to work, you'll need a `Symbol` polyfill)
 
-```js
+```jsx
 // in this case lang data looks like:
 //  {
 //    "app": {
@@ -79,9 +79,10 @@ Every call is memoized. To receive string value from last call, use `.toString()
 //  }
 
 import { connect } from 'react-redux';
+import { getLang } from 'redux-pagan';
 
 @connect(state => ({
-  lang: state.i18n.get('app'),
+  lang: getLang(state.i18n, 'app'),
   locale: state.i18n.locale
 }))
 class App extends Component {
