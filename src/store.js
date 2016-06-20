@@ -1,23 +1,18 @@
 import { LOAD_LANG_SUCCESS } from './actionTypes';
-import i18nResolver from './i18nResolver';
 
 const DEFAULT_STATE = {
-  get(...args) {
-    return i18nResolver(null, {}, 0, ...args);
-  },
-  __version__: 0
+  __version__: 0,
+  locale: null,
+  data: {}
 };
 
-const mergeLang = (state, action) => ({
+const mergeLang = (state, { locale, lang }) => ({
   ...state,
   data: {
     ...state.data,
-    [action.locale]: action.lang
+    [locale]: lang
   },
-  locale: action.locale,
-  get(...args) {
-    return i18nResolver(this.locale, this.data[this.locale], this.__version__, ...args);
-  },
+  locale,
   __version__: state.__version__ + 1
 });
 

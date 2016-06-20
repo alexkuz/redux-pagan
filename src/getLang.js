@@ -26,7 +26,7 @@ function getLangString(locale, data, fullpath) {
           const keyPath = `${locale}:${fullpath.join('/')}`;
           if (!isEmpty(data) && !notFoundKeyWarned[keyPath]) {
             if (process.env.NODE_ENV !== 'production') {
-              console.warn(`Redux-Pagan: key was not found at path: ${keyPath}`);
+              console.error(`Redux-Pagan: key was not found at path: ${keyPath}`);
             }
             notFoundKeyWarned[keyPath] = true;
           }
@@ -41,7 +41,7 @@ function getLangString(locale, data, fullpath) {
 
   if (str && !(typeof str === 'string')) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn('String expected, got: ', str);
+      console.error('String expected, got: ', str);
     }
   }
 
@@ -49,9 +49,9 @@ function getLangString(locale, data, fullpath) {
 }
 
 function concatPath(locale, data, path, subpath) {
-  if (isEmpty(data) && !emptyLocaleDataWarned[locale]) {
+  if (isEmpty(data) && !emptyLocaleDataWarned[locale] && locale !== null) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn(`Redux-Pagan: got empty data for locale '${locale}'`);
+      console.error(`Redux-Pagan: got empty data for locale '${locale}'`);
     }
     emptyLocaleDataWarned[locale] = true;
   }
@@ -106,8 +106,12 @@ function concatPath(locale, data, path, subpath) {
 
 /* eslint-enable no-console */
 
-export default memoize(function i18nResolver(locale, data, version, ...path) {
+const i18nResolver = memoize(function i18nResolver(locale, data, version, ...path) {
   return concatPath(locale, data, [], path);
 }, function(locale, data, version, ...path) {
   return [locale, version, ...path].join(',');
 });
+
+export default function getLang(i18n, ...args) {
+  return i18nResolver(i18n.locale, i18n.data[i18n.locale], i18n.__version__, ...args);
+}

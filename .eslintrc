@@ -19,19 +19,6 @@
     "quotes": [2, "single", "avoid-escape"],
     "curly": [0],
 
-    "react/jsx-boolean-value": 1,
-    "react/jsx-quotes": 1,
-    "react/jsx-no-undef": 2,
-    "react/jsx-uses-react": 2,
-    "react/jsx-uses-vars": 2,
-    "react/no-did-mount-set-state": 1,
-    "react/no-did-update-set-state": 1,
-    "react/no-multi-comp": 0,
-    "react/no-unknown-property": 1,
-    "react/react-in-jsx-scope": 1,
-    "react/self-closing-comp": 1,
-    "react/wrap-multilines": 1,
- 
     "generator-star-spacing": 0,
     "new-cap": 0,
     "object-curly-spacing": 0,
@@ -43,7 +30,6 @@
     "babel/object-shorthand": 1
   },
   "plugins": [
-    "react",
     "babel"
   ],
   "settings": {
