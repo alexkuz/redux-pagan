@@ -79,9 +79,10 @@ Every call is memoized. To receive string value from last call, use `.toString()
 //  }
 
 import { connect } from 'react-redux';
+import { getLang } from 'redux-pagan';
 
 @connect(state => ({
-  lang: state.i18n.get('app'),
+  lang: getLang(state.i18n, 'app'),
   locale: state.i18n.locale
 }))
 class App extends Component {
