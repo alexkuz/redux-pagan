@@ -57,9 +57,9 @@ class App extends Component {
 
 #### Using lang data
 
-`getLang(i18n, ...path)` is a special method that safely obtains strings from lang data. If no strings were found on stated path, last key is returned. This method's calling is chainable:
+`getLang(state.i18n, ...path)` is a special method that safely obtains strings from lang data. If no strings were found on stated path, last key is returned. This method's calling is chainable:
 ```js
-getLang(i18n, 'some', 'path', 'to')('lang', 'string')
+getLang(state.i18n, 'some', 'path', 'to')('lang', 'string')
 ```
 Every call is memoized. To receive string value from last call, use `.toString()` or `.s` property (it's also smart enough to be used as React element without calling `.toString()` or `.s` - **NB**: for this to work, you'll need a `Symbol` polyfill)
 
