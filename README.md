@@ -61,7 +61,7 @@ class App extends Component {
 ```js
 getLang(state.i18n, 'some', 'path', 'to')('lang', 'string')
 ```
-Every call is memoized. To receive string value from last call, use `.toString()` or `.s` property (it's also smart enough to be used as React element without calling `.toString()` or `.s` - **NB**: for this to work, you'll need a `Symbol` polyfill)
+Every call is memoized. To receive string value from last call, use `.toString()` or `.s` property.
 
 ```js
 // in this case lang data looks like:
@@ -92,8 +92,8 @@ class App extends Component {
 
     return (
       <div>
-        {this.props.lang('some', 'text')}
-        <Element lang={this.props.lang('element')} />
+        {this.props.lang('some', 'text').s}
+        <Element lang={this.props.lang('element').s} />
       </div>
     );
   }
@@ -103,7 +103,7 @@ class Element extends Component {
   render() {
     return (
       <div>
-        {this.props.lang('something', 'else')}
+        {this.props.lang('something', 'else').s}
       </div>
     );
   }
